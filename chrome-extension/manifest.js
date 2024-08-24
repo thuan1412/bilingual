@@ -24,11 +24,11 @@ const manifest = deepmerge(
      * if you want to support multiple languages, you can use the following reference
      * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization
      */
-    name: '__MSG_extensionName__',
+    name: 'Bilingual dev',
     version: packageJson.version,
-    description: '__MSG_extensionDescription__',
+    description: 'Bilingual extension for Youtube video to learn a new language',
     host_permissions: ['<all_urls>'],
-    permissions: ['storage', 'scripting'],
+    permissions: ['storage', 'scripting', 'webRequest'],
     options_page: 'options/index.html',
     background: {
       service_worker: 'background.iife.js',
@@ -39,14 +39,14 @@ const manifest = deepmerge(
       default_icon: 'icon-34.png',
     },
     chrome_url_overrides: {
-      newtab: 'new-tab/index.html',
+      // newtab: 'new-tab/index.html',
     },
     icons: {
       128: 'icon-128.png',
     },
     content_scripts: [
       {
-        matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+        matches: ['https://www.youtube.com/*'],
         js: ['content/index.iife.js'],
       },
       {

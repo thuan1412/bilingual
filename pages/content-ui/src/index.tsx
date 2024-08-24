@@ -4,9 +4,28 @@ import App from '@src/app';
 import tailwindcssOutput from '../dist/tailwind-output.css?inline';
 
 const root = document.createElement('div');
-root.id = 'chrome-extension-boilerplate-react-vite-content-view-root';
+root.id = 'bilingual-view-root';
 
-document.body.append(root);
+const startTime = Date.now();
+const injectRoot = () => {
+  // if not video page, do not inject
+  if (!window.location.pathname.startsWith('/watch')) {
+    return;
+  }
+  const intervalId = setInterval(() => {
+    const secondary = document.getElementById('secondary');
+    if (secondary) {
+      secondary.insertBefore(root, secondary.firstChild);
+      clearInterval(intervalId);
+    } else if (Date.now() - startTime > 5000) {
+      clearInterval(intervalId);
+    }
+  }, 500);
+};
+
+window.addEventListener('hashchange', injectRoot);
+window.addEventListener('popstate', injectRoot);
+injectRoot();
 
 const rootIntoShadow = document.createElement('div');
 rootIntoShadow.id = 'shadow-root';

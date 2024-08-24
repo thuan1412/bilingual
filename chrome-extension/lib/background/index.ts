@@ -1,9 +1,61 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import 'webextension-polyfill';
-import { exampleThemeStorage } from '@extension/storage';
+import { captionsStorage, exampleThemeStorage, requestParamsStorage } from '@extension/storage';
 
 exampleThemeStorage.get().then(theme => {
   console.log('theme', theme);
 });
 
-console.log('background loaded');
-console.log("Edit 'chrome-extension/lib/background/index.ts' and save to reload.");
+const getCaptions = async (urlStr: string, tlang: string) => {
+  const url = new URL(urlStr);
+
+  url.searchParams.set('isBot', '1');
+  url.searchParams.set('lang', 'en');
+
+  if (url.searchParams.get('lang') === tlang) {
+    url.searchParams.delete('tlang');
+  } else {
+    // url.searchParams.set('lang', tlang);
+    url.searchParams.set('tlang', tlang);
+  }
+  const response = await fetch(url.toString());
+  const captionsRes = await response.json();
+
+  return captionsRes;
+};
+
+const saveCaptionsHandler = async (url: string) => {
+  const firstLang = 'en';
+  const secondLang = 'vi';
+
+  const params = new URL(url).searchParams;
+  const currentVideoId = (await captionsStorage.get()).videoId;
+  // console.log('🚀 ~ saveCaptionsHandler ~ currentVideoId:', params, currentVideoId);
+
+  if (currentVideoId === params.get('v')) {
+    return;
+  }
+
+  const firstCaps = await getCaptions(url, firstLang);
+  const secondCaps = await getCaptions(url, secondLang);
+
+  const data = {
+    videoId: params.get('v'),
+    firstLang: firstCaps,
+    secondLang: secondCaps,
+  };
+  console.log('saving data', data.videoId, data);
+  await captionsStorage.set(data);
+};
+
+chrome.webRequest.onBeforeRequest.addListener(
+  function (details) {
+    if (details.url.includes('timedtext') && !details.url.includes('isBot')) {
+      requestParamsStorage.set(details.url);
+    }
+    // if (details.url.includes('timedtext') && !details.url.includes('isBot')) {
+    //   saveCaptionsHandler(details.url);
+    // }
+  },
+  { urls: ['<all_urls>'] },
+);

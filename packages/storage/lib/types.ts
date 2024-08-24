@@ -9,11 +9,17 @@ export type BaseStorage<D> = {
   subscribe: (listener: () => void) => () => void;
 };
 
+export type Config = {
+  aiTranslate: boolean;
+  enable: boolean;
+};
 export type Theme = 'light' | 'dark';
 
 export type ThemeStorage = BaseStorage<Theme> & {
   toggle: () => Promise<void>;
 };
+
+export type CaptionsStorage = BaseStorage<string>;
 
 export type StorageConfig<D = string> = {
   /**
