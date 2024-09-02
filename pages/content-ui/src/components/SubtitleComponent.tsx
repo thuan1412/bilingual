@@ -20,9 +20,9 @@ const SubtitleComponent = ({ subtitle, isActive }: SubtitleProps) => {
         <button onClick={setVideoTime} className="mr-2 cursor-pointer text-gray-400">
           {timestamp}
         </button>
-        <div className={'flex flex-col ' + (isActive ? 'font-bold' : '')}>
-          <p>{firstLanguage}</p>
-          <p>{secondLanguage}</p>
+        <div className="flex flex-col">
+          <p className={isActive ? 'font-bold' : ''}>{firstLanguage}</p>
+          <p className={'italic ' + (isActive ? 'font-medium' : '')}>{secondLanguage}</p>
         </div>
       </div>
     </div>
