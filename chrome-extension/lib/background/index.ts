@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import 'webextension-polyfill';
-import { captionsStorage, exampleThemeStorage, requestParamsStorage } from '@extension/storage';
+import { captionsStorage, exampleThemeStorage, requestParamsStorage, videoIdMapStorage } from '@extension/storage';
 
 exampleThemeStorage.get().then(theme => {
-  console.log('theme', theme);
+  // console.log('theme test', theme);
 });
 
 const getCaptions = async (urlStr: string, tlang: string) => {
@@ -51,11 +51,12 @@ const saveCaptionsHandler = async (url: string) => {
 chrome.webRequest.onBeforeRequest.addListener(
   function (details) {
     if (details.url.includes('timedtext') && !details.url.includes('isBot')) {
+      const videoId = new URL(details.url).searchParams.get('v') as string;
+
       requestParamsStorage.set(details.url);
+      console.log('videoId', videoId, details.url);
+      videoIdMapStorage.addVideoId(videoId, details.url);
     }
-    // if (details.url.includes('timedtext') && !details.url.includes('isBot')) {
-    //   saveCaptionsHandler(details.url);
-    // }
   },
   { urls: ['<all_urls>'] },
 );

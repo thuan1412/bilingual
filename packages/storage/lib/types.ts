@@ -21,6 +21,14 @@ export type ThemeStorage = BaseStorage<Theme> & {
 
 export type CaptionsStorage = BaseStorage<string>;
 
+export type VideoIdMap = Record<string, string>;
+
+export type VideoIdMapStorage = BaseStorage<VideoIdMap> & {
+  addVideoId: (videoId: string, url: string) => Promise<void>;
+  removeVideoId: (videoId: string) => Promise<void>;
+  getByVideoId: (videoId: string) => Promise<string>;
+};
+
 export type StorageConfig<D = string> = {
   /**
    * Assign the {@link StorageEnum} to use.
