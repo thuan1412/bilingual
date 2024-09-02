@@ -109,14 +109,14 @@ export const mergeCaptionsToBiSubtitle = (firstEvents: any, secondEvents: any): 
   const timestampToSecondSeg: Record<number, string> = {};
   secondEvents.forEach((event: { segs?: { utf8: string }[]; tStartMs: number }) => {
     if (!event.segs) {
-      return '';
+      return;
     }
     const text = event.segs.flatMap((segment: { utf8: string }) => segment.utf8).join('');
     timestampToSecondSeg[event.tStartMs] = text;
   });
   const data = firstEvents.map((event: { tStartMs: number; segs?: { utf8: string }[] }) => {
     if (!event.segs) {
-      return '';
+      return;
     }
     return {
       timeInMs: event.tStartMs,
@@ -125,5 +125,6 @@ export const mergeCaptionsToBiSubtitle = (firstEvents: any, secondEvents: any): 
       secondLanguage: timestampToSecondSeg[event.tStartMs],
     };
   });
-  return data;
+
+  return data.filter((ele: Subtitle | undefined) => !(!ele || ele.firstLanguage === '\n'));
 };
