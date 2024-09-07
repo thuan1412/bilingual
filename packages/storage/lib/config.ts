@@ -1,13 +1,15 @@
 import { createStorage } from './base';
 import { StorageEnum } from './enums';
-import type { Config } from './types';
+import type { Config, ConfigStorage } from './types';
 
 const storage = createStorage<Config>(
   'config',
   {
     aiTranslate: true,
     enable: true,
-  },
+    firstLanguage: 'en',
+    secondLanguage: 'es',
+  } as Config,
   {
     storageEnum: StorageEnum.Local,
     liveUpdate: true,
@@ -15,7 +17,7 @@ const storage = createStorage<Config>(
 );
 
 // You can extend it with your own methods
-export const configStorage = {
+export const configStorage: ConfigStorage = {
   ...storage,
   toggleExtension: async () => {
     await storage.set(current => {
@@ -25,6 +27,16 @@ export const configStorage = {
   toggleAI: async () => {
     await storage.set(current => {
       return { ...current, aiTranslate: !current.aiTranslate };
+    });
+  },
+  setFirstLanguage: async (language: string) => {
+    await storage.set(current => {
+      return { ...current, firstLanguage: language };
+    });
+  },
+  setSecondLanguage: async (language: string) => {
+    await storage.set(current => {
+      return { ...current, secondLanguage: language };
     });
   },
 };

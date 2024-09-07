@@ -50,11 +50,11 @@ const manifest = deepmerge(
         js: ['content/index.iife.js'],
       },
       {
-        matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+        matches: ['https://www.youtube.com/*'],
         js: ['content-ui/index.iife.js'],
       },
       {
-        matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+        matches: ['https://www.youtube.com/*'],
         css: ['content.css'], // public folder
       },
     ],

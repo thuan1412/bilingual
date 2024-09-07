@@ -12,6 +12,15 @@ export type BaseStorage<D> = {
 export type Config = {
   aiTranslate: boolean;
   enable: boolean;
+  firstLanguage: string;
+  secondLanguage: string;
+};
+
+export type ConfigStorage = BaseStorage<Config> & {
+  setFirstLanguage: (language: string) => void;
+  setSecondLanguage: (language: string) => void;
+  toggleAI: () => void;
+  toggleExtension: () => void;
 };
 export type Theme = 'light' | 'dark';
 

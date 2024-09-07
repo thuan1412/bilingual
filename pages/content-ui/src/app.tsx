@@ -14,8 +14,9 @@ type MainUIProps = {
 };
 
 const MainUI = ({ requestUrl }: MainUIProps) => {
-  const { captions: firstCaptions } = useCaptions(requestUrl, 'en');
-  const { captions: secondCaptions } = useCaptions(requestUrl, 'vi');
+  const config = useStorageSuspense(configStorage);
+  const { captions: firstCaptions } = useCaptions(requestUrl, config.firstLanguage);
+  const { captions: secondCaptions } = useCaptions(requestUrl, config.secondLanguage);
   const biCaptions = mergeCaptionsToBiSubtitle(firstCaptions?.events ?? [], secondCaptions?.events ?? []);
   const [activeSubtitle, setCurrentSubtitle] = useState<Subtitle | null>(null);
 
