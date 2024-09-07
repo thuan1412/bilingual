@@ -38,8 +38,7 @@ const MainUI = ({ requestUrl }: MainUIProps) => {
 
   return (
     <div className="border-gray-100 border-2 border-solid p-2 rounded-lg text-2xl " style={{ maxHeight: videoHeight }}>
-      <Settings />
-      <div className="overflow-scroll size-full " style={{ maxHeight: videoHeight - 50 }}>
+      <div className="overflow-scroll size-full " style={{ maxHeight: videoHeight }}>
         {biCaptions.map((item, idx) => (
           <SubtitleComponent key={idx} subtitle={item} isActive={activeSubtitle?.timestamp == item.timestamp} />
         ))}

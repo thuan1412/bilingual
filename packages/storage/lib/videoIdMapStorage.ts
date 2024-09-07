@@ -6,8 +6,9 @@ const storage = createStorage<VideoIdMap>(
   'video-id-map-key',
   {},
   {
-    storageEnum: StorageEnum.Local,
+    storageEnum: StorageEnum.Session,
     liveUpdate: true,
+    sessionAccessForContentScripts: true,
   },
 );
 

@@ -8,12 +8,12 @@ root.id = 'bilingual-view-root';
 
 const startTime = Date.now();
 const injectRoot = () => {
-  // if not video page, do not inject
-  if (!window.location.pathname.startsWith('/watch')) {
-    return;
-  }
   const intervalId = setInterval(() => {
-    const secondary = document.getElementById('secondary');
+    // if not video page, then return
+    if (!window.location.pathname.startsWith('/watch')) {
+      return;
+    }
+    const secondary = document.querySelector('div#columns div#secondary');
     if (secondary) {
       secondary.insertBefore(root, secondary.firstChild);
       clearInterval(intervalId);
@@ -23,9 +23,15 @@ const injectRoot = () => {
   }, 500);
 };
 
-window.addEventListener('hashchange', injectRoot);
-window.addEventListener('popstate', injectRoot);
-injectRoot();
+let lastUrl = '';
+
+setInterval(() => {
+  const currentUrl = window.location.href;
+  if (currentUrl !== lastUrl || lastUrl === '') {
+    injectRoot();
+    lastUrl = currentUrl; // Update the last URL to the new one
+  }
+}, 500); // Check every 1 second
 
 const rootIntoShadow = document.createElement('div');
 rootIntoShadow.id = 'shadow-root';
