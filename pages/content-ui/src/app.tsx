@@ -6,7 +6,6 @@ import type { Subtitle } from './types';
 import { useEffect, useState } from 'react';
 import SubtitleComponent from './components/SubtitleComponent';
 import { getCurrentTimeInMs, getVideIdFromUrl, isVideoPlaying, scrollToSubtitle } from './utils/ytb';
-import Settings from './components/Settings';
 
 type MainUIProps = {
   videoUrl: string;
@@ -38,7 +37,7 @@ const MainUI = ({ requestUrl }: MainUIProps) => {
 
   return (
     <div className="border-gray-100 border-2 border-solid p-2 rounded-lg text-2xl " style={{ maxHeight: videoHeight }}>
-      <div className="overflow-scroll size-full " style={{ maxHeight: videoHeight }}>
+      <div id="subtitile-container" className="overflow-scroll size-full " style={{ maxHeight: videoHeight }}>
         {biCaptions.map((item, idx) => (
           <SubtitleComponent key={idx} subtitle={item} isActive={activeSubtitle?.timestamp == item.timestamp} />
         ))}

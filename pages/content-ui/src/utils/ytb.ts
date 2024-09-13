@@ -1,9 +1,20 @@
 export const scrollToSubtitle = (currentTime: string) => {
-  const subtitleElement = document
-    .querySelector('#bilingual-view-root')
-    ?.shadowRoot?.getElementById(`subtitle-${currentTime}`);
-  if (subtitleElement) {
-    subtitleElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const rootElement = document.querySelector('#bilingual-view-root');
+  const subtitleElement = rootElement?.shadowRoot?.getElementById(`subtitle-${currentTime}`);
+  const scrollableDiv = rootElement?.shadowRoot?.getElementById('subtitile-container');
+
+  console.log(subtitleElement, scrollableDiv);
+  if (subtitleElement && scrollableDiv) {
+    const subtitleElementRect = subtitleElement.getBoundingClientRect();
+    const scrollableDivRect = scrollableDiv.getBoundingClientRect();
+    const relativeTop = subtitleElementRect.top - scrollableDivRect.top;
+
+    const newScrollTop = scrollableDiv.scrollTop + relativeTop - scrollableDivRect.height / 2;
+
+    scrollableDiv.scrollTo({
+      top: newScrollTop,
+      behavior: 'smooth',
+    });
   }
 };
 
